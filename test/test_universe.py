@@ -2,36 +2,36 @@ import unittest
 import mock
 
 import json
-from src.einstein import Einstein, BrokenUniverseException
+from src.universe import Universe, BrokenUniverseException
 
-class TestEinstein(unittest.TestCase):
+class TestUniverse(unittest.TestCase):
     def setUp(self):
         self.fake_universe = {}
         f = mock.MagicMock()
         f.read = lambda: json.dumps(self.fake_universe)
 
-        self.mock_open = mock.patch('src.einstein.open', return_value=f)
+        self.mock_open = mock.patch('src.universe.open', return_value=f)
         self.mock_open.start()
  
     def tearDown(self):
         self.mock_open.stop()
 
-    def test_load_universe(self):
+    def test_load(self):
         self.fake_universe = {'colors': ['red', 'blue']}
-        e = Einstein()
+        u = Universe()
 
-        self.assertEqual(e.universe, self.fake_universe)
-        self.assertEqual(e.combinations, [])
+        self.assertEqual(u.universe, self.fake_universe)
+        self.assertEqual(u.permutations, [])
 
-    def test_combinations(self):
+    def test_permute(self):
         self.fake_universe = {
             'colors': ['red', 'blue', 'white'],
             'pets': ['cat', 'dog', 'fish']}
 
-        e = Einstein()
+        u = Universe()
 
-        self.assertEqual(e.universe, self.fake_universe)
-        self.assertEqual(e.combinations, [
+        self.assertEqual(u.universe, self.fake_universe)
+        self.assertEqual(u.permutations, [
             {'cat', 'red'},
             {'red', 'dog'},
             {'red', 'fish'},
@@ -44,7 +44,7 @@ class TestEinstein(unittest.TestCase):
 
     def test_empty_universe(self):
         self.fake_universe = {}
-        self.assertEqual(Einstein().universe, self.fake_universe)
+        self.assertEqual(Universe().universe, self.fake_universe)
 
     def test_broken_universe(self):
         self.fake_universe = {
@@ -52,7 +52,7 @@ class TestEinstein(unittest.TestCase):
             'pets': ['cats', 'dogs']}
 
         with self.assertRaises(BrokenUniverseException):
-            Einstein()
+            Universe()
 
 
 if __name__ == '__main__':

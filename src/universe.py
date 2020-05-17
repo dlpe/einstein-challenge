@@ -12,15 +12,14 @@ class BrokenUniverseException(Exception):
         super().__init__(BrokenUniverseException.MISMATCHING_LEN)
 
 
-class Einstein(object):
-    """Reads the universe and the conditions and then tries to determine
-       the members of the challenge and each of their attributes."""
+class Universe(object):
+    """Reads the universe and creates the possible permutations."""
 
     def __init__(self):
-        self.load_universe()
-        self.make_combinations()
+        self.load()
+        self.permute()
 
-    def load_universe(self):
+    def load(self):
         """Loads universe from UNIVERSE_FILE and checks for errors"""
 
         universe_candidate = {}
@@ -37,17 +36,17 @@ class Einstein(object):
 
         self.universe = universe_candidate
 
-    def make_combinations(self):
+    def permute(self):
         """Creates a list of all possible combinations in the beggining."""
 
-        self.combinations = []
+        self.permutations = []
         attributes = self.universe.keys()
         universe_length = len(attributes)
 
         for i in range(universe_length - 1):
             for j in range(i + 1, universe_length):
                 a1, a2 = list(attributes)[i], list(attributes)[j]
-                self.combinations += [{x, y}
+                self.permutations += [{x, y}
                     for x in self.universe[a1]
                     for y in self.universe[a2]]
 
