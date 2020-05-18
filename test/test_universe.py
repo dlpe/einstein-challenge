@@ -6,9 +6,9 @@ from src.universe import Universe, BrokenUniverseException
 
 class TestUniverse(unittest.TestCase):
     def setUp(self):
-        self.fake_universe = {}
+        self.fake_dic = {}
         f = mock.MagicMock()
-        f.read = lambda: json.dumps(self.fake_universe)
+        f.read = lambda: json.dumps(self.fake_dic)
 
         self.mock_open = mock.patch('src.universe.open', return_value=f)
         self.mock_open.start()
@@ -17,20 +17,20 @@ class TestUniverse(unittest.TestCase):
         self.mock_open.stop()
 
     def test_load(self):
-        self.fake_universe = {'colors': ['red', 'blue']}
+        self.fake_dic = {'colors': ['red', 'blue']}
         u = Universe()
 
-        self.assertEqual(u.universe, self.fake_universe)
+        self.assertEqual(u.dic, self.fake_dic)
         self.assertEqual(u.permutations, [])
 
     def test_permute(self):
-        self.fake_universe = {
+        self.fake_dic = {
             'colors': ['red', 'blue', 'white'],
             'pets': ['cat', 'dog', 'fish']}
 
         u = Universe()
 
-        self.assertEqual(u.universe, self.fake_universe)
+        self.assertEqual(u.dic, self.fake_dic)
         self.assertEqual(u.permutations, [
             {'cat', 'red'},
             {'red', 'dog'},
@@ -43,11 +43,11 @@ class TestUniverse(unittest.TestCase):
             {'fish', 'white'}])
 
     def test_empty_universe(self):
-        self.fake_universe = {}
-        self.assertEqual(Universe().universe, self.fake_universe)
+        self.fake_dic = {}
+        self.assertEqual(Universe().dic, self.fake_dic)
 
     def test_broken_universe(self):
-        self.fake_universe = {
+        self.fake_dic = {
             'color': ['red', 'blue', 'green'],
             'pets': ['cats', 'dogs']}
 
