@@ -31,7 +31,11 @@ class Condition(object):
         Condition.conditions.append(self)
 
     def __eq__(self, other):
-        return self.expression == other.expression
+        if self.a == other.a and self.b == other.b:
+            return True
+        if self.b == other.a and self.a == other.b:
+            return True
+        return False
 
     def __repr__(self):
         return self.expression

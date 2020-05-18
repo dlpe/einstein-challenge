@@ -46,5 +46,20 @@ class TestLinkCondition(unittest.TestCase):
             'fish',
             'Turkish'})
 
+    def test_eq(self):
+        self.fake_dic = {
+            'colors': ['white', 'green', 'gold'],
+            'pets': ['fish', 'elephant', 'tiger'],
+            'nationalities': ['Brazilian', 'Turkish', 'Vietnamese'],
+            'foods': ['tofu', 'soy', 'beans']}
+
+        condition1 = LinkCondition('gold fish')
+        condition2 = LinkCondition('fish Turkish')
+        condition3 = LinkCondition('fish gold')
+
+        self.assertFalse(condition1 == condition2)
+        self.assertTrue(condition1 == condition3)
+
+
 if __name__ == '__main__':
     unittest.main()
