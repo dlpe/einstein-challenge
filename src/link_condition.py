@@ -7,6 +7,8 @@ class LinkCondition(Condition):
        to the same element."""
 
     link_conditions = []
+    Universe.resetters.append(link_conditions)
+ 
     def __init__(self, expression):
         super().__init__(expression)
         LinkCondition.link_conditions.append(self)
@@ -37,12 +39,32 @@ class LinkCondition(Condition):
             if linked == self.b: continue
             if (linked, self.b) in LinkCondition.link_conditions: continue
             LinkCondition('{} {}'.format(self.b, linked))
+            LinkCondition('{} {}'.format(self.b, linked))
+
         for linked in Condition.linked_to(self.b):
             if linked == self.a: continue
             if (linked, self.a) in LinkCondition.link_conditions: continue
             LinkCondition('{} {}'.format(self.a, linked))
+            LinkCondition('{} {}'.format(self.a, linked))
 
-        for boundary in Condition.conditions:
-            if boundary.a in self.related() or boundary.b in self.related():
-                boundary.trigger()
+        LinkCondition.check_orphans()
+        self.invoke_boundaries()
+
+    @staticmethod
+    def check_orphans():
+        vals = list(Universe.instance().dic.values())
+        for i in range(len(vals)):
+            for j in range(len(vals)):
+                if i == j: continue
+                for element in vals[i]:
+                    LinkCondition.check_orphaned_element(element, vals[j])
+
+    @staticmethod
+    def check_orphaned_element(element, group):
+        universe = Universe.instance().permutations
+        opts_left = list(filter(lambda i: {element, i} in universe, group))
+
+        links = LinkCondition.link_conditions
+        if len(opts_left) == 1 and (opts_left[0], element) not in links:
+            LinkCondition("{0} {1}".format(opts_left[0], element))
 

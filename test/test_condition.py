@@ -47,7 +47,7 @@ class TestCondition(unittest.TestCase):
         Universe.instance().permutations.remove({'yellow', 'cats'})
 
         with self.assertRaises(NoMatchLeftException):
-            print(Condition.linked_to('yellow'))
+            Condition.linked_to('yellow')
 
     def test_eq(self):
         self.fake_dic = {

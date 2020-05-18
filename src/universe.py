@@ -16,6 +16,7 @@ class Universe(object):
     """Reads the universe and creates the possible permutations."""
 
     singleton = None
+    resetters = []
 
     def __init__(self):
         self.load()
@@ -37,6 +38,11 @@ class Universe(object):
             raise BrokenUniverseException()
 
         self.dic = dic_candidate
+
+        self.dic['positions'] = []
+        if vals:
+            self.dic['positions'] = [str(i)
+                for i in range(1, len(vals[0]) + 1)]
 
     def permute(self):
         """Creates a list of all possible combinations in the beggining."""
@@ -61,3 +67,7 @@ class Universe(object):
     @staticmethod
     def reset():
         Universe.singleton = None
+        for r in Universe.resetters:
+            for el in r:
+                r.remove(el)
+

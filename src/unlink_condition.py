@@ -1,5 +1,6 @@
 from src.universe import Universe
 from src.condition import Condition
+from src.link_condition import LinkCondition
 
 
 class UnlinkCondition(Condition):
@@ -7,11 +8,13 @@ class UnlinkCondition(Condition):
        element."""
 
     unlink_conditions = []
+    Universe.resetters.append(unlink_conditions)
+
     def __init__(self, expression):
         super().__init__(expression)
         if self not in UnlinkCondition.unlink_conditions:
             UnlinkCondition.unlink_conditions.append(self)
-        self.unlink()
+            self.unlink()
 
     def __eq__(self, t):
         if isinstance(t, tuple):
@@ -26,6 +29,7 @@ class UnlinkCondition(Condition):
 
         if {self.a, self.b} in universe.permutations:
             universe.permutations.remove({self.a, self.b})
+            LinkCondition.check_orphans()
 
         for el_a in Condition.linked_to(self.a) | {self.a}:
             for el_b in Condition.linked_to(self.b) | {self.b}:

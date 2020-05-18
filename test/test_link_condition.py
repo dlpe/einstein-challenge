@@ -24,11 +24,15 @@ class TestLinkCondition(unittest.TestCase):
             'pets': ['cats', 'dogs']}
 
         self.assertTrue(LinkCondition('dogs yellow'))
+        self.assertTrue(LinkCondition('dogs 1'))
+ 
         self.assertEqual(Universe.instance().permutations, [
             {'yellow', 'dogs'},
-            {'blue', 'cats'}
-        ])
-
+            {'blue', 'cats'},
+            {'1', 'yellow'},
+            {'blue', '2'},
+            {'cats', '2'},
+            {'1', 'dogs'}])
 
     def test_linked_members(self):
         self.fake_dic = {

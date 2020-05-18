@@ -18,7 +18,7 @@ class TestUnlinkCondition(unittest.TestCase):
         self.mock_open.stop()
         Universe.reset()
 
-    def test_link(self):
+    def test_unlink(self):
         self.fake_dic = {
             'colors': ['yellow', 'blue'],
             'pets': ['cats', 'dogs'],
@@ -26,13 +26,21 @@ class TestUnlinkCondition(unittest.TestCase):
 
         self.assertTrue(UnlinkCondition('dogs yellow'))
         self.assertTrue(UnlinkCondition('Ford cats'))
+        self.assertTrue(UnlinkCondition('dogs 2'))
+
         self.assertEqual(Universe.instance().permutations, [
-            {'cats', 'yellow'},
+            {'yellow', 'cats'},
             {'blue', 'dogs'},
-            {'Toyota', 'yellow'},
+            {'yellow', 'Toyota'},
             {'blue', 'Ford'},
+            {'yellow', '2'},
+            {'blue', '1'},
             {'cats', 'Toyota'},
-            {'dogs', 'Ford'}])
+            {'dogs', 'Ford'},
+            {'cats', '2'},
+            {'dogs', '1'},
+            {'2', 'Toyota'},
+            {'1', 'Ford'}])
 
 
 if __name__ == '__main__':

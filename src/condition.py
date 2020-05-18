@@ -24,6 +24,7 @@ class Condition(object):
     """Represents a condition and the members to whom it refers to"""
 
     conditions = []
+    Universe.resetters.append(conditions)
 
     def __init__(self, expression):
         self.set_members(expression)
@@ -87,7 +88,13 @@ class Condition(object):
 
         return linked_elements
 
+    def invoke_boundaries(self):
+        for boundary in Condition.conditions:
+            if boundary.a in self.related() or boundary.b in self.related():
+                boundary.trigger()
+
     def trigger(self):
         """Abstract trigger method. Must be implemented by boundary 
            type conditions."""
         pass
+
