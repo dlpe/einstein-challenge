@@ -3,18 +3,18 @@ from src.condition import Condition
 from src.unlink_condition import UnlinkCondition
 
 
-class NextCondition(Condition):
-    """This condition means element a and element b are next to each other
-       in any order. It is also considered a 'boundary', which means it
-       implements a trigger when one of the elements is set to a position."""
+class BeforeCondition(Condition):
+    """This condition means element a comes before element b. It is also
+       considered a 'boundary', which means it implements a trigger when
+       one of the elements is set to a position."""
 
-    next_conditions = []
-    Universe.resetters.append(next_conditions)
+    before_conditions = []
+    Universe.resetters.append(before_conditions)
 
     def __init__(self, expression):
         super().__init__(expression)
-        if self not in NextCondition.next_conditions:
-            NextCondition.next_conditions.append(self)
+        if self not in BeforeCondition.before_conditions:
+            BeforeCondition.before_conditions.append(self)
             UnlinkCondition(expression)
             self.trigger()
 
@@ -44,16 +44,14 @@ class NextCondition(Condition):
                 count_b += 1
                 pos_b = position
 
-        for count, position, other in (
-                (count_a, pos_a, self.b),
-                (count_b, pos_b, self.a)):
+        for count, position, other, factor in (
+                (count_a, pos_a, self.b, -1),
+                (count_b, pos_b, self.a, 1)):
 
             if int(count) != 1: continue
 
             for i in Universe.instance().dic['positions']:
-                is_neighbor = int(i) + 1 == int(position)
-                is_neighbor |= int(i) - 1 == int(position)
-
-                if is_neighbor: continue
+                is_before = int(i) * factor < int(position)
+                if is_before: continue
 
                 UnlinkCondition("{} {}".format(i, other)) 

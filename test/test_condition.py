@@ -30,14 +30,6 @@ class TestCondition(unittest.TestCase):
         with self.assertRaises(InvalidMember):
             Condition('fish yellow')
 
-    def test_same_type_link(self):
-        self.fake_dic = {
-            'colors': ['yellow', 'blue'],
-            'pets': ['cats', 'dogs']}
-
-        with self.assertRaises(InvalidMember):
-            Condition('blue yellow')
-
     def test_nomatchexception(self):
         self.fake_dic = {
             'colors': ['yellow', 'blue'],

@@ -1,5 +1,5 @@
 from src.universe import Universe
-from src.condition import Condition
+from src.condition import Condition, InvalidMember
 
 
 class LinkCondition(Condition):
@@ -67,4 +67,16 @@ class LinkCondition(Condition):
         links = LinkCondition.link_conditions
         if len(opts_left) == 1 and (opts_left[0], element) not in links:
             LinkCondition("{0} {1}".format(opts_left[0], element))
+
+    def check_valid(self):
+        super().check_valid()
+
+        universe = Universe.instance()
+        vals = list(i for v in universe.dic.values() for i in v)
+        keys = universe.dic.keys()
+
+        for key, group in universe.dic.items():
+            if self.a in group and self.b in group:
+                raise InvalidMember(self.b)
+
 

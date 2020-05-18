@@ -55,9 +55,9 @@ class Condition(object):
                 raise InvalidMember(m)
 
         for key, group in universe.dic.items():
-            if self.a in group and self.b in group:
-                raise InvalidMember(self.b)
-            elif self.a in group:
+            # if self.a in group and self.b in group:
+            #     raise InvalidMember(self.b)
+            if self.a in group:
                 self.key_a = key
                 self.group_a = group
             elif self.b in group:

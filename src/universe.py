@@ -68,6 +68,5 @@ class Universe(object):
     def reset():
         Universe.singleton = None
         for r in Universe.resetters:
-            for el in r:
-                r.remove(el)
+            r.clear()
 

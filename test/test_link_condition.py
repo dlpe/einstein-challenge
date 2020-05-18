@@ -2,6 +2,7 @@ import unittest
 import mock
 import json
 
+from src.condition import InvalidMember
 from src.link_condition import LinkCondition
 from src.universe import Universe
 
@@ -63,6 +64,14 @@ class TestLinkCondition(unittest.TestCase):
 
         self.assertFalse(condition1 == condition2)
         self.assertTrue(condition1 == condition3)
+
+    def test_same_type_link(self):
+        self.fake_dic = {
+            'colors': ['yellow', 'blue'],
+            'pets': ['cats', 'dogs']}
+
+        with self.assertRaises(InvalidMember):
+            LinkCondition('blue yellow')
 
 
 if __name__ == '__main__':
