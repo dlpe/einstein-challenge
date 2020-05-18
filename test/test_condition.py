@@ -2,7 +2,10 @@ import unittest
 import mock
 import json
 
-from src.condition import Condition, InvalidMember
+from src.condition import (
+    Condition,
+    InvalidMember)
+
 from src.universe import Universe
 
 class TestCondition(unittest.TestCase):
@@ -16,17 +19,7 @@ class TestCondition(unittest.TestCase):
 
     def tearDown(self):
         self.mock_open.stop()
-
-    def test_link(self):
-        self.fake_dic = {
-            'colors': ['yellow', 'blue'],
-            'pets': ['cats', 'dogs']}
-
-        self.assertTrue(Condition('dogs yellow'))
-        self.assertEqual(Universe.instance().permutations, [
-            {'yellow', 'dogs'},
-            {'blue', 'cats'}
-        ])
+        Universe.reset()
 
     def test_inexistent(self):
         self.fake_dic = {
@@ -43,7 +36,6 @@ class TestCondition(unittest.TestCase):
 
         with self.assertRaises(InvalidMember):
             Condition('blue yellow')
-
 
 
 if __name__ == '__main__':

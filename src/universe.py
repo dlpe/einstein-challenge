@@ -57,3 +57,7 @@ class Universe(object):
         if not Universe.singleton:
             Universe.singleton = Universe()
         return Universe.singleton
+
+    @staticmethod
+    def reset():
+        Universe.singleton = None

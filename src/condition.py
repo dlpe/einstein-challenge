@@ -1,5 +1,6 @@
 from src.universe import Universe
 
+
 class InvalidMember(Exception):
     """Raised when a condition doesn't meet expected criteria."""
 
@@ -8,13 +9,36 @@ class InvalidMember(Exception):
     def __init__(self, member):
         super().__init__(InvalidMember.MSG.format(member))
 
+
+class NoMatchLeftException(Exception):
+    """Raised when a condition is impossible."""
+
+    MSG = "No match for element {}!"
+
+    def __init__(self, element, group):
+        super().__init__(NoMatchLeftException.MSG.format((element, group, )))
+
+
+
 class Condition(object):
     """Represents a condition and the members to whom it refers to"""
 
+    conditions = []
+
     def __init__(self, expression):
-        self.a, self.b = expression.split()
+        self.set_members(expression)
         self.check_valid()
-        self.link()
+        Condition.conditions.append(self)
+
+    def __eq__(self, other):
+        return self.expression == other.expression
+
+    def __repr__(self):
+        return self.expression
+
+    def set_members(self, expression):
+        self.expression = expression
+        self.a, self.b = expression.split()
 
     def check_valid(self):
         universe = Universe.instance()
@@ -35,12 +59,31 @@ class Condition(object):
                 self.key_b = key
                 self.group_b = group
 
-    def link(self):
-        universe = Universe.instance()
-        for p in universe.permutations:
-            if self.a in p and self.b not in p:
-                if any(i in p for i in self.group_b):
-                    universe.permutations.remove(p)
-            elif self.b in p and self.a not in p:
-                if any(i in p for i in self.group_a):
-                    universe.permutations.remove(p)
+    def related(self):
+        return Condition.linked_to(self.a) | Condition.linked_to(self.b)
+
+    @staticmethod
+    def linked_to(element):
+        linked_elements = set()
+        for group in Universe.instance().dic.values():
+            if element in group: continue
+            
+            possible_combinations = []
+            candidate = None
+
+            for item in group:
+                if {item, element} in Universe.instance().permutations:
+                    candidate = item
+                    possible_combinations.append({item, element})
+
+            if len(possible_combinations) == 0:
+                raise NoMatchLeftException(element, group)
+            elif len(possible_combinations) == 1:
+                linked_elements |= {candidate}
+
+        return linked_elements
+
+    def trigger(self):
+        """Abstract trigger method. Must be implemented by boundary 
+           type conditions."""
+        pass

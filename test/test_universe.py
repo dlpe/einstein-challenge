@@ -15,6 +15,7 @@ class TestUniverse(unittest.TestCase):
  
     def tearDown(self):
         self.mock_open.stop()
+        Universe.reset()
 
     def test_load(self):
         self.fake_dic = {'colors': ['red', 'blue']}
@@ -53,6 +54,16 @@ class TestUniverse(unittest.TestCase):
 
         with self.assertRaises(BrokenUniverseException):
             Universe()
+
+    def test_single_element(self):
+        self.fake_dic = {
+            'colors': ['gold'],
+            'pets': ['fish']}
+
+        u = Universe()
+
+        self.assertEqual(u.dic, self.fake_dic)
+        self.assertEqual(u.permutations, [{'fish', 'gold'}])
 
 
 if __name__ == '__main__':
