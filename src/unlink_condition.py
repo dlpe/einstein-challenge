@@ -13,13 +13,13 @@ class UnlinkCondition(Condition):
     def __init__(self, expression):
         super().__init__(expression)
         if self not in UnlinkCondition.unlink_conditions:
+            print('Creating Unlink Condition {}'.format(self))
             UnlinkCondition.unlink_conditions.append(self)
-            self.unlink()
+            self.trigger()
 
-    def __eq__(self, t):
-        if isinstance(t, tuple):
-            return self.a in t and self.b in t
-        return super().__eq__(t)
+        if self.has_changed():
+            self.invoke_boundaries()
+            LinkCondition.check_orphans()
 
     def unlink(self):
         """Linking two elements means removing the alternatives from the
@@ -27,15 +27,24 @@ class UnlinkCondition(Condition):
 
         universe = Universe.instance()
 
+        should_invoke = False
         if {self.a, self.b} in universe.permutations:
             universe.permutations.remove({self.a, self.b})
-            LinkCondition.check_orphans()
+            should_invoke = True
 
         for el_a in Condition.linked_to(self.a) | {self.a}:
             for el_b in Condition.linked_to(self.b) | {self.b}:
                 if (el_a, el_b) in UnlinkCondition.unlink_conditions:
                     continue
+
                 if {el_a, el_b} not in universe.permutations:
                     continue
+
+                #should_invoke = True
                 UnlinkCondition("{} {}".format(el_a, el_b))
 
+        return should_invoke
+
+    def trigger(self):
+        super().trigger()
+        self.unlink()

@@ -16,6 +16,10 @@ class BeforeCondition(Condition):
         if self not in BeforeCondition.before_conditions:
             BeforeCondition.before_conditions.append(self)
             UnlinkCondition(expression)
+            UnlinkCondition('1 {}'.format(self.b))
+            UnlinkCondition('{} {}'.format(
+                Universe.instance().dic['positions'][-1], 
+                self.a, ))
             self.trigger()
 
     def __eq__(self, t):

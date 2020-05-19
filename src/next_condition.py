@@ -1,6 +1,7 @@
 from src.universe import Universe
 from src.condition import Condition
 from src.unlink_condition import UnlinkCondition
+from src.link_condition import LinkCondition
 
 
 class NextCondition(Condition):
@@ -17,17 +18,15 @@ class NextCondition(Condition):
             NextCondition.next_conditions.append(self)
             UnlinkCondition(expression)
             self.trigger()
-
-    def __eq__(self, t):
-        if isinstance(t, tuple):
-            return self.a in t and self.b in t
-        return super().__eq__(t)
+            #self.invoke_boundaries()
+            #LinkCondition.check_orphans()
 
     def trigger(self):
         count_a, count_b = 0, 0
         pos_a, pos_b = 0, 0
+        permutations = Universe.instance().permutations
 
-        for p in Universe.instance().permutations:
+        for p in permutations:
             if not any(i.isnumeric() for i in p):
                 continue
 
@@ -38,11 +37,19 @@ class NextCondition(Condition):
             position = p1 if p1.isnumeric() else p2
 
             if self.a in p:
-                count_a += 1
-                pos_a = position
+                if ({self.b, str(int(position) + 1)} in permutations or
+                    {self.b, str(int(position) - 1)} in permutations):
+                    count_a += 1
+                    pos_a = position
+                else:
+                    UnlinkCondition('{} {}'.format(self.a, position))
             else:
-                count_b += 1
-                pos_b = position
+                if ({self.a, str(int(position) + 1)} in permutations or
+                    {self.a, str(int(position) - 1)} in permutations):
+                    count_b += 1
+                    pos_b = position
+                else:
+                    UnlinkCondition('{} {}'.format(self.b, position))
 
         for count, position, other in (
                 (count_a, pos_a, self.b),
@@ -50,10 +57,22 @@ class NextCondition(Condition):
 
             if int(count) != 1: continue
 
+            possible_pos = []
             for i in Universe.instance().dic['positions']:
-                is_neighbor = int(i) + 1 == int(position)
-                is_neighbor |= int(i) - 1 == int(position)
+                # is_neighbor = int(i) + 1 == int(position)
+                # is_neighbor |= int(i) - 1 == int(position)
+                # if is_neighbor: continue
 
-                if is_neighbor: continue
+                if int(i) + 1 == int(position):
+                    possible_pos.append(i)
+                    continue
 
-                UnlinkCondition("{} {}".format(i, other)) 
+                if int(i) - 1 == int(position):
+                    possible_pos.append(i)
+                    continue
+
+                UnlinkCondition("{} {}".format(i, other))
+
+            if len(possible_pos) == 1:
+                LinkCondition('{} {}'.format(possible_pos[0], other))
+

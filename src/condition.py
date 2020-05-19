@@ -19,7 +19,6 @@ class NoMatchLeftException(Exception):
         super().__init__(NoMatchLeftException.MSG.format((element, group, )))
 
 
-
 class Condition(object):
     """Represents a condition and the members to whom it refers to"""
 
@@ -30,16 +29,25 @@ class Condition(object):
         self.set_members(expression)
         self.check_valid()
         Condition.conditions.append(self)
+        self.before_perms = len(list(Universe.instance().permutations))
 
     def __eq__(self, other):
+        if isinstance(other, tuple):
+            return self.a in other and self.b in other
+        if self.__class__.__name__ != other.__class__.__name__:
+            return False
         if self.a == other.a and self.b == other.b:
             return True
         if self.b == other.a and self.a == other.b:
             return True
+
         return False
 
     def __repr__(self):
         return self.expression
+
+    def has_changed(self):
+        return len(list(Universe.instance().permutations)) != self.before_perms
 
     def set_members(self, expression):
         self.expression = expression
@@ -84,17 +92,19 @@ class Condition(object):
             if len(possible_combinations) == 0:
                 raise NoMatchLeftException(element, group)
             elif len(possible_combinations) == 1:
+                # if len(possible_combinations) == 1:
                 linked_elements |= {candidate}
 
         return linked_elements
 
     def invoke_boundaries(self):
         for boundary in Condition.conditions:
-            if boundary.a in self.related() or boundary.b in self.related():
-                boundary.trigger()
+        #    if boundary.a in self.related() or boundary.b in self.related():
+        #        boundary.trigger()
+            if boundary != self: boundary.trigger()
 
     def trigger(self):
-        """Abstract trigger method. Must be implemented by boundary 
+        """Trigger method. Should be implemented by boundary 
            type conditions."""
-        pass
+        self.before_perms = len(list(Universe.instance().permutations))
 
