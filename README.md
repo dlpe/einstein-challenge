@@ -18,7 +18,7 @@ This is a very simple project in Python that I developed in order to tackle this
 
 2.1 Basic Usage
 
-If you just want to check out how it works you can read and run driver.py. It simply creates the conditions according to what is described in the original status and prints the output after each iteration.
+If you just want to check out how it works you can read and run driver.py. It simply creates the conditions according to what is described in the original riddle and prints the current status of the universe after each iteration.
 
 
 2.2 Universe
