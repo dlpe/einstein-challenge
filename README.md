@@ -18,7 +18,19 @@ This is a very simple project in Python that I developed in order to tackle this
 
 The universe class and object holds all permutations possible on a given moment after t conditions have been handled. It is represented as a set of sets. In the very beginning, all permutations are possible, so it holds all sets made by crossing the different characteristics e.g. {{'red', 'Brit'}, {'red', 'Dane'}, etc }. The data structure chosen here was a set since the order shouldn't matter and it makes easier for built in comparisons in Python.
 
+The dictionary used to build this universe together with its permutations can be changed in universe.json. Theoretically any set of characteristics could be used instead of houses, colors, nationalities, beverages etc. This can be found in the unit tests. There is a caveat, hoewever, that is the use of numeric values. This will break parts of the code that evaluate if an attribute isnumeric() or not. A small restructuring of the code will make this dispensable so it's bound to be an easy fix.
+
 2.2 Conditions
 
 Here I named all the constraints as conditions during one of my daily lapses of stupidity instead of constraints. They are implicitly separated into a) "Linking and "Unlinking" constraints, i.e. red is Brit or yellow can't have cats, and b) "boundary"constraints, which implement a trigger() method that is called when there's an update to the universe and the constraint should check and update according to its boundaries.
 
+2.2.1 Base Condition
+2.2.2 Link Condition
+2.2.3 Unlink Condition
+2.2.4 Neighbour Condition
+2.2.5 Left Condition
+2.2.6 Before Condition
+
+2.3 Test Driver
+
+This test driver was built to run the exact conditions of the original riddle while printing the status of the universe after each condition is applied and the number of permutations possible still within it. Should become superfluous once I have the unit tests where I want them, since they are 100% coverage but don't really evaluate the behaviour for all the complex scenarios and preexistent conditions.
