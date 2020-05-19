@@ -1,6 +1,6 @@
 from src.universe import Universe
-from src.condition import Condition
-from src.link_condition import LinkCondition
+from src.condition.base_condition import Condition
+from src.condition.link_condition import LinkCondition
 
 
 class UnlinkCondition(Condition):
@@ -13,7 +13,6 @@ class UnlinkCondition(Condition):
     def __init__(self, expression):
         super().__init__(expression)
         if self not in UnlinkCondition.unlink_conditions:
-            print('Creating Unlink Condition {}'.format(self))
             UnlinkCondition.unlink_conditions.append(self)
             self.trigger()
 
@@ -40,7 +39,6 @@ class UnlinkCondition(Condition):
                 if {el_a, el_b} not in universe.permutations:
                     continue
 
-                #should_invoke = True
                 UnlinkCondition("{} {}".format(el_a, el_b))
 
         return should_invoke

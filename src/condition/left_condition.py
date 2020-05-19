@@ -1,7 +1,7 @@
 from src.universe import Universe
-from src.condition import Condition
-from src.unlink_condition import UnlinkCondition
-from src.link_condition import LinkCondition
+from src.condition.base_condition import Condition
+from src.condition.unlink_condition import UnlinkCondition
+from src.condition.link_condition import LinkCondition
 
 
 class LeftCondition(Condition):

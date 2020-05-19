@@ -1,6 +1,6 @@
 from src.universe import Universe
-from src.condition import Condition
-from src.unlink_condition import UnlinkCondition
+from src.condition.base_condition import Condition
+from src.condition.unlink_condition import UnlinkCondition
 
 
 class BeforeCondition(Condition):

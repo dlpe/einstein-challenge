@@ -1,7 +1,7 @@
 from src.universe import Universe
-from src.condition import Condition
-from src.unlink_condition import UnlinkCondition
-from src.link_condition import LinkCondition
+from src.condition.base_condition import Condition
+from src.condition.unlink_condition import UnlinkCondition
+from src.condition.link_condition import LinkCondition
 
 
 class NextCondition(Condition):
@@ -18,8 +18,6 @@ class NextCondition(Condition):
             NextCondition.next_conditions.append(self)
             UnlinkCondition(expression)
             self.trigger()
-            #self.invoke_boundaries()
-            #LinkCondition.check_orphans()
 
     def trigger(self):
         count_a, count_b = 0, 0
@@ -59,10 +57,6 @@ class NextCondition(Condition):
 
             possible_pos = []
             for i in Universe.instance().dic['positions']:
-                # is_neighbor = int(i) + 1 == int(position)
-                # is_neighbor |= int(i) - 1 == int(position)
-                # if is_neighbor: continue
-
                 if int(i) + 1 == int(position):
                     possible_pos.append(i)
                     continue

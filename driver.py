@@ -1,5 +1,5 @@
-from src import (
-    universe,
+from src import universe
+from src.condition import (
     left_condition,
     next_condition,
     link_condition,

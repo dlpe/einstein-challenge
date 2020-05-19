@@ -63,8 +63,6 @@ class Condition(object):
                 raise InvalidMember(m)
 
         for key, group in universe.dic.items():
-            # if self.a in group and self.b in group:
-            #     raise InvalidMember(self.b)
             if self.a in group:
                 self.key_a = key
                 self.group_a = group
@@ -92,15 +90,12 @@ class Condition(object):
             if len(possible_combinations) == 0:
                 raise NoMatchLeftException(element, group)
             elif len(possible_combinations) == 1:
-                # if len(possible_combinations) == 1:
                 linked_elements |= {candidate}
 
         return linked_elements
 
     def invoke_boundaries(self):
         for boundary in Condition.conditions:
-        #    if boundary.a in self.related() or boundary.b in self.related():
-        #        boundary.trigger()
             if boundary != self: boundary.trigger()
 
     def trigger(self):

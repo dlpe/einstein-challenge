@@ -2,8 +2,8 @@ import unittest
 import mock
 import json
 
-from src.condition import InvalidMember
-from src.link_condition import LinkCondition
+from src.condition.base_condition import InvalidMember
+from src.condition.link_condition import LinkCondition
 from src.universe import Universe
 
 class TestLinkCondition(unittest.TestCase):

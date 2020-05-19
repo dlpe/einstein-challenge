@@ -2,7 +2,7 @@ import unittest
 import mock
 import json
 
-from src.unlink_condition import UnlinkCondition
+from src.condition.unlink_condition import UnlinkCondition
 from src.universe import Universe
 
 class TestUnlinkCondition(unittest.TestCase):

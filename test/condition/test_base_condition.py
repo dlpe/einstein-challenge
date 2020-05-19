@@ -2,7 +2,7 @@ import unittest
 import mock
 import json
 
-from src.condition import (
+from src.condition.base_condition import (
     Condition,
     InvalidMember,
     NoMatchLeftException)

@@ -2,8 +2,8 @@ import unittest
 import mock
 import json
 
-from src.unlink_condition import UnlinkCondition
-from src.next_condition import NextCondition
+from src.condition.unlink_condition import UnlinkCondition
+from src.condition.next_condition import NextCondition
 from src.universe import Universe
 
 class TestNextCondition(unittest.TestCase):

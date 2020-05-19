@@ -1,5 +1,5 @@
 from src.universe import Universe
-from src.condition import Condition, InvalidMember
+from src.condition.base_condition import Condition, InvalidMember
 
 class LinkCondition(Condition):
     """The simplest of conditions is linking two attributes as belonging
@@ -12,7 +12,6 @@ class LinkCondition(Condition):
         super().__init__(expression)
         if self not in LinkCondition.link_conditions:
             LinkCondition.link_conditions.append(self)
-            print('Creating Link Condition {}'.format(self))
             self.trigger()
 
         if self.has_changed():
