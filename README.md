@@ -10,6 +10,7 @@ The puzzle is often called Einstein's Puzzle or Einstein's Riddle because it is 
 
 Source: https://en.wikipedia.org/wiki/Zebra_Puzzle
 
+
 2 This project
 
 This is a very simple project in Python that I developed in order to tackle this problem. It falls under the category of the Constraint Satisfaction Problems (CSP), which means you are given a number of constraints and you have to find a set up or a set of set ups that can meet all the constraints.
@@ -20,16 +21,23 @@ The universe class and object holds all permutations possible on a given moment 
 
 The dictionary used to build this universe together with its permutations can be changed in universe.json. Theoretically any set of characteristics could be used instead of houses, colors, nationalities, beverages etc. This can be found in the unit tests. There is a caveat, hoewever, that is the use of numeric values. This will break parts of the code that evaluate if an attribute isnumeric() or not. A small restructuring of the code will make this dispensable so it's bound to be an easy fix.
 
+
 2.2 Conditions
 
 Here I named all the constraints as conditions during one of my daily lapses of stupidity instead of constraints. They are implicitly separated into a) "Linking and "Unlinking" constraints, i.e. red is Brit or yellow can't have cats, and b) "boundary"constraints, which implement a trigger() method that is called when there's an update to the universe and the constraint should check and update according to its boundaries.
 
 2.2.1 Base Condition
+
 2.2.2 Link Condition
+
 2.2.3 Unlink Condition
+
 2.2.4 Neighbour Condition
+
 2.2.5 Left Condition
+
 2.2.6 Before Condition
+
 
 2.3 Test Driver
 
