@@ -42,3 +42,9 @@ Here I named all the constraints as conditions during one of my daily lapses of 
 2.3 Test Driver
 
 This test driver was built to run the exact conditions of the original riddle while printing the status of the universe after each condition is applied and the number of permutations possible still within it. Should become superfluous once I have the unit tests where I want them, since they are 100% coverage but don't really evaluate the behaviour for all the complex scenarios and preexistent conditions.
+
+
+2.4 Performance
+
+Yes, performance here is still clearly underwhelming. Consider the status this solution is at right now as a "mold" to perfect the unit tests, that are my real solution here. As soon as my test suite is where I want it to be, playing with the conditions to make them more performatic should be a breeze.
+
