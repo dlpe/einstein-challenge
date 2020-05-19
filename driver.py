@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from src import universe
 from src.condition import (
     left_condition,
@@ -5,66 +7,40 @@ from src.condition import (
     link_condition,
     unlink_condition)
 
-import copy
-from pprint import pprint
+perms = universe.Universe.instance().permutations
+not_num = lambda s: not s.isnumeric()
 
 def chk():
-    print('-------------------------------')
+    print('-' * 20)
+
     for i in range(1, 6):
-        print(list((list(x)[0] if list(x)[1].isnumeric() else list(x)[1])
-              for x in universe.Universe.instance().permutations if str(i) in x))
-    print(len(list(universe.Universe.instance().permutations)))
+        it = (list(filter(not_num, x)) for x in perms if str(i) in x)
+        print('{}: {}'.format(i, list(it)))
 
-def link(exp):
-    link_condition.LinkCondition(exp)
-    chk()
+    print(len(list(perms)))
 
-def ne(exp):
-    next_condition.NextCondition(exp)
-    chk()
+def wrap(f):
+    def ff(exp):
+        f(exp)
+        chk()
+    return ff
 
-def left(exp):
-    left_condition.LeftCondition(exp)
-    chk()
+link = wrap(link_condition.LinkCondition)
+nex = wrap(next_condition.NextCondition)
+left = wrap(left_condition.LeftCondition)
 
-def cant(exp):
-    unlink_condition.UnlinkCondition(exp)
-    chk()
-
-
-print('-------------------------------')
 link('Brit red')
-print('-------------------------------')
 link('Swede dogs')
-print('-------------------------------')
 link('Dane tea')
-print('-------------------------------')
 left('green white')
-print('-------------------------------')
 link('green coffee')
-print('-------------------------------')
 link('PallMall birds')
-print('-------------------------------')
 link('yellow Dunhill')
-print('-------------------------------')
 link('3 milk')
-print('-------------------------------')
 link('1 Norwegian')
-print('-------------------------------')
-ne('blends cats')
-print('-------------------------------')
-ne('horses Dunhill')
-print('-------------------------------')
+nex('blends cats')
+nex('horses Dunhill')
 link('BlueMaster beer')
-print('-------------------------------')
 link('German Prince')
-print('-------------------------------')
-ne('Norwegian blue')
-print('-------------------------------')
-ne('blends water')
-
-
-perms = lambda: universe.Universe.instance().permutations
-print('-------------------------------')
-for i in range(1, 6):
-    print(list(x for x in perms() if str(i) in x))
+nex('Norwegian blue')
+nex('blends water')
